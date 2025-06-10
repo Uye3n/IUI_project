@@ -1,0 +1,75 @@
+body {
+    background-image: url("background.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+.fixed-window {
+    width: 600px;
+    height: 630px;
+    margin: 0 auto;
+}
+.clock-container {
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+#clock {
+    height: 125px;
+    margin-top: 75px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    font-family: 'VT323', 'basis33', 'Pixel FJVerdana', monospace;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+#start-button, #stop-button, #pause-button {
+    font-family: 'VT323', 'basis33', 'Pixel FJVerdana', monospace;
+    font-size: 35px;
+}
+
+#mascot-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    font-family: 'VT323', 'basis33', 'Pixel FJVerdana', monospace;
+    font-size: 20px;
+}
+
+.mascot-selection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#select-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#select-button {
+    font-family: 'VT323', 'basis33', 'Pixel FJVerdana', monospace;
+    font-size: 25px;
+}
+
+.bottom-container {
+    display: flex;
+    gap: 20px;
+}
+
+#block-list-button {
+    resize: inline;
+}

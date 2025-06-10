@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Buddy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="fixed-window">
+    <div class="clock-container">
+        <div id="clock">
+            <h1>00:00</h1>
+        </div>
+        <div class="button-container">
+            <button id="start-button">START</button>
+            <button id="stop-button">STOP</button>
+            <button id="pause-button">PAUSE</button>
+        </div>
+    </div>
+    <div class="mascot-container">
+        <div id="mascot-label">Choose your mascot!</div>
+        <div class="mascot-selection">
+            <div id="left-arrow">
+                <button type="button">&lt;</button>
+            </div>
+            <div class="mascot-showcase"></div>
+            <div id="left-mascot">
+                <img src="mascot_locked.png" alt="mascot" id="mascot-left-locked-img">
+            </div>
+            <div id="selected-mascot">
+                <img src="mascot_unlocked.png" alt="mascot" id="mascot-selected-img">
+            </div>
+            <div id="right-mascot">
+                <img src="mascot_lower_opacity.png" alt="mascot" id="mascot-right-unlocked-img">
+            </div>
+            <div id="right-arrow">
+                <button type="button">&gt;</button>
+            </div>
+        </div>
+        <div id="select-container">
+            <button id="select-button">SELECT</button>
+        </div>
+    </div>
+    <div class="bottom-container">
+        <button id="block-list-button"><img src="block-list.png" alt="Block-List" id="block-list-img"></button>
+        <button id="pop-out-button"><img src="pop-out.png" alt="Pop-Out" id="pop-out-img"></button>
+    </div>
+</div>
+</body>
+</html>
