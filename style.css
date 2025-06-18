@@ -1,5 +1,5 @@
 body {
-    background-image: url("background.png");
+    background-image: url("sprites/background.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -33,17 +33,56 @@ body {
     gap: 20px;
 }
 
-#start-button, #stop-button, #pause-button {
-    font-family: 'VT323', 'basis33', 'Pixel FJVerdana', monospace;
-    font-size: 35px;
+#start-button, #stop-button, #pause-button, #select-button {
+    width: 172px;
+    height: 63px;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: inline-block;
+}
+
+#start-button {
+    background: transparent url(sprites/start_button.png) no-repeat 0 0;
+}
+
+#start-button:hover {
+    background: transparent url("sprites/start_button_clicked.png") no-repeat 0 0;
+}
+
+#stop-button {
+    width: 145px;
+    background: transparent url(sprites/stop_button.png) no-repeat 0 0;
+}
+
+#stop-button:hover {
+    background: transparent url("sprites/stop_button_clicked.png") no-repeat 0 0;
+}
+
+#pause-button {
+    width: 168px;
+    background: transparent url(sprites/pause_button.png) no-repeat 0 0;
+}
+
+#pause-button:hover {
+    background: transparent url("sprites/pause_button_clicked.png") no-repeat 0 0;
+}
+
+#select-button {
+    width: 205px;
+    background: transparent url(sprites/select_button.png) no-repeat 0 0;
+}
+
+#select-button:hover {
+    background: transparent url("sprites/select_button_clicked.png") no-repeat 0 0;
 }
 
 #mascot-label {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
-    margin-bottom: 20px;
+    margin-top: 70px;
+    margin-bottom: 40px;
     font-family: 'VT323', 'basis33', 'Pixel FJVerdana', monospace;
     font-size: 20px;
 }
@@ -60,16 +99,48 @@ body {
     align-items: center;
 }
 
-#select-button {
-    font-family: 'VT323', 'basis33', 'Pixel FJVerdana', monospace;
-    font-size: 25px;
-}
-
 .bottom-container {
     display: flex;
     gap: 20px;
 }
 
+#left-arrow-button, #right-arrow-button, #block-list-button, #pop-out-button {
+    width: 60px;
+    height: 60px;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: inline-block;
+}
+
+#left-arrow-button {
+    background: transparent url(sprites/arrow_left.png) no-repeat 0 0;
+}
+
+#left-arrow-button:hover {
+    background: transparent url("sprites/arrow_left_clicked.png") no-repeat 0 0;
+}
+
+#right-arrow-button {
+    background: transparent url(sprites/arrow_right.png) no-repeat 0 0;
+}
+
+#right-arrow-button:hover {
+    background: transparent url("sprites/arrow_right_clicked.png") no-repeat 0 0;
+}
+
 #block-list-button {
-    resize: inline;
+    background: transparent url(sprites/list_button.png) no-repeat 0 0;
+}
+
+#block-list-button:hover {
+    background: transparent url("sprites/list_button_clicked.png") no-repeat 0 0;
+}
+
+#pop-out-button {
+    background: transparent url(sprites/pop_out.png) no-repeat 0 0;
+}
+
+#pop-out-button:hover {
+    background: transparent url("sprites/pop_out_clicked.png") no-repeat 0 0;
 }
