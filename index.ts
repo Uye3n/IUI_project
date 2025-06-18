@@ -8,7 +8,7 @@ let stopped: boolean = false;
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const clock = document.getElementById('clock');
+    const clock = document.querySelector('#clock h1');
     const start = document.getElementById('start-button');
     const pause = document.getElementById('pause-button');
     const stop = document.getElementById('stop-button');
