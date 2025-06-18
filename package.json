@@ -1,13 +1,23 @@
 {
-  "name": "IUI_project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "study_buddy",
+  "version": "0.0.1",
+  "description": "helps with studying",
+  "main": "main.js",
   "scripts": {
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,
   "devDependencies": {
     "electron": "^36.4.0"
-  }
+  },
+  "dependencies": {
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Uye3n/IUI_project.git"
+  },
+  "author": "",
+  "license": "ISC"
 }
