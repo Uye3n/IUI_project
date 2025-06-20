@@ -3,9 +3,22 @@ let counter: number = 0;
 let keyListening = false;
 let timerInterval: any;
 let timerover: boolean = true;
-let entering: boolean = false;
+let is_confirmed: boolean = false;
 let started: boolean = false;
 let paused: boolean = false;
+let mascot_index: number = 0;
+
+type Mascot = {
+    id: number;
+    pic: string;
+    animations: string[];
+};
+
+const mascots: Mascot[] = [
+    { id: 0, pic: 'sprites/frog_mascot.png', animations: [] },
+    { id: 1, pic: 'sprites/red_panda_mascot.png', animations: [] },
+    { id: 2, pic: 'sprites/mascot_unlocked.png', animations: [] },
+];
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -13,6 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const start = document.getElementById('start-button');
     const pause = document.getElementById('pause-button');
     const stop = document.getElementById('stop-button');
+    const left_mascot = document.querySelector('#left-mascot img') as HTMLImageElement | null;
+    const right_mascot = document.querySelector('#right-mascot img') as HTMLImageElement | null;
+    const selected_mascot = document.querySelector('#selected-mascot img') as HTMLImageElement | null;
+    const left_arrow = document.getElementById('left-arrow-button');
+    const right_arrow = document.getElementById('right-arrow-button');
+    const select = document.getElementById('select-button');
+
+
 
     if (clock) {
         clock.addEventListener('click', () => {
@@ -26,27 +47,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    if(left_arrow){
+        left_arrow.addEventListener('click', () => {
+            mascot_index = (mascot_index - 1 + mascots.length) % mascots.length;
+            switchMascot(left_mascot, right_mascot, selected_mascot);
+        })
+    }
+
+    if(right_arrow){
+        right_arrow.addEventListener('click', () => {
+            mascot_index = (mascot_index + 1 + mascots.length) % mascots.length;;
+            switchMascot(left_mascot, right_mascot, selected_mascot);
+        })
+    }
+
+    if(select){
+        select.addEventListener('click', () => {
+            selectMascot();
+        })
+    }
+
+
     if (stop) {
         stop.addEventListener('click', () => {
-            stopTimer(clock);
+            if(is_confirmed){
+                stopTimer(clock); 
+            } 
+            
         });
     }
 
     if (pause) {
         pause.addEventListener('click', () => {
-            pauseTimer(clock);
+            if(is_confirmed){
+                pauseTimer(clock);
+            } 
+            
         });
     }
 
     if (start) {
-        start.addEventListener('click', () => {
-            startTimer(time, clock);
+        start.addEventListener('click', () => {   
+            if(is_confirmed){
+                startTimer(time, clock); 
+            } 
+                
         });
     }
 
+
+
     function eingabe(event: KeyboardEvent) {
         if (started) return;
-        entering = true;
         const key = event.key;
 
         if (key === 'Backspace' && clock) {
@@ -60,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (key === 'Enter' && clock) {
-            entering = false;
+            is_confirmed = true;
 
             while (time.length < 4) {
                 time.push('0');
@@ -82,6 +134,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+function switchMascot(left_mascot: HTMLImageElement | null, right_mascot: HTMLImageElement | null, selected_mascot: HTMLImageElement | null){
+    if (selected_mascot){
+        selected_mascot.src = mascots[mascot_index].pic; 
+    }
+}
+
+function selectMascot(){
+
+}
 
 function formatEingabe(time_string: string[]): string {
     const formatted = [...time_string];
@@ -115,7 +177,8 @@ function formatTime(time_string: string[]): string {
 
 
 function startTimer(time: string[], clock: Element | null) {
-    if (!timerover && (timerInterval === undefined || paused)) {
+    if (!is_confirmed || timerover || started) return;
+
         paused = false;
 
         timerInterval = setInterval(() => {
@@ -152,7 +215,7 @@ function startTimer(time: string[], clock: Element | null) {
                 clock.textContent = `${m1}${m2}:${s1}${s2}`;
             }
         }, 1000);
-    }
+    
 }
 
 function pauseTimer(clock: Element | null) {
