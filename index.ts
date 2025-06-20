@@ -1,10 +1,11 @@
-let time: number[] = [0,0,0,0]; 
+let time: string[] = [];
+let counter: number = 0;
 let keyListening = false;
-let timerInterval: any; 
-let secondover: boolean = false; 
-let timerover: boolean = false;
+let timerInterval: any;
+let timerover: boolean = true;
+let entering: boolean = false;
+let started: boolean = false;
 let paused: boolean = false;
-let stopped: boolean = false; 
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -12,125 +13,171 @@ document.addEventListener('DOMContentLoaded', () => {
     const start = document.getElementById('start-button');
     const pause = document.getElementById('pause-button');
     const stop = document.getElementById('stop-button');
-    const select = document.getElementById('select-button');
-    const right = document.getElementById('right-arrow');
-    const left = document.getElementById('left-arrow');
-    
-    if (clock){
-        clock.addEventListener('click', () => {
-            time = [0,0,0,0] ; 
-            clock.textContent = formatTimeFromTyped(time, false);
 
-            if(!keyListening){
-                document.addEventListener('keydown', whenKeyDown);
+    if (clock) {
+        clock.addEventListener('click', () => {
+            clock.textContent = formatEingabe(time);
+
+            if (!keyListening) {
+                document.addEventListener('keydown', eingabe);
+                counter = time.length;
                 keyListening = true;
             }
-            
-        })
+        });
     }
 
-    if (start && time.length == 4 && clock && stop){
+    if (stop) {
         stop.addEventListener('click', () => {
-            if (timerInterval){
+            stopTimer(clock);
+        });
+    }
+
+    if (pause) {
+        pause.addEventListener('click', () => {
+            pauseTimer(clock);
+        });
+    }
+
+    if (start) {
+        start.addEventListener('click', () => {
+            startTimer(time, clock);
+        });
+    }
+
+    function eingabe(event: KeyboardEvent) {
+        if (started) return;
+        entering = true;
+        const key = event.key;
+
+        if (key === 'Backspace' && clock) {
+            if (counter > 0) {
+                counter -= 1;
+                time.splice(counter, 1);
+            }
+
+            clock.textContent = formatEingabe(time);
+            return;
+        }
+
+        if (key === 'Enter' && clock) {
+            entering = false;
+
+            while (time.length < 4) {
+                time.push('0');
+            }
+            clock.textContent = formatEingabe(time);
+
+            clock.textContent = formatTime(time);
+            document.removeEventListener('keydown', eingabe);
+            keyListening = false;
+            timerover = false;
+            return;
+        }
+
+        if (key >= '0' && key <= '9' && clock && counter < 4) {
+            time[counter] = key;
+            counter += 1;
+
+            clock.textContent = formatEingabe(time);
+        }
+    }
+});
+
+function formatEingabe(time_string: string[]): string {
+    const formatted = [...time_string];
+
+    while (formatted.length < 4) {
+        formatted.push('-');
+    }
+
+    return `${formatted[0]}${formatted[1]}:${formatted[2]}${formatted[3]}`;
+}
+
+function formatTime(time_string: string[]): string {
+
+    let digits = time_string.map(d => parseInt(d) || 0);
+
+    let totalSeconds = (digits[0] * 10 + digits[1]) * 60 + (digits[2] * 10 + digits[3]);
+
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+
+    let index0 = Math.floor(minutes / 10);
+    let index1 = minutes % 10;
+
+    let index2 = Math.floor(seconds / 10);
+    let index3 = seconds % 10;
+
+    time = [index0.toString(), index1.toString(), index2.toString(), index3.toString()]
+
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+
+function startTimer(time: string[], clock: Element | null) {
+    if (!timerover && (timerInterval === undefined || paused)) {
+        paused = false;
+
+        timerInterval = setInterval(() => {
+            started = true;
+
+            let digits = time.map(d => parseInt(d) || 0);
+            let totalSeconds = (digits[0] * 10 + digits[1]) * 60 + (digits[2] * 10 + digits[3]);
+
+            if (totalSeconds <= 0) {
                 clearInterval(timerInterval);
-                time = [0,0,0,0];
                 timerInterval = undefined;
                 timerover = true;
-                clock.textContent = formatTimeFromTyped(time, secondover);
-                stopped = true;
-            }
-        })
-    }
-
-    if (start && time.length == 4 && clock && pause){
-        pause.addEventListener('click', () => {
-            if (timerInterval){
-                clearInterval(timerInterval);
-                timerInterval = undefined;
-                timerover = false;
-                paused = true; 
-            }
-        })
-    }
-
-    if(start && time.length == 4 && clock){
-        start.addEventListener('click', () => {
-
-           if ((!timerInterval)){
-                timerInterval = setInterval(() => {
-                if (timerover){
-                    time = [0,0,0,0];
-                }
-                secondover = true;
-                clock.textContent = formatTimeFromTyped(time, secondover);
-                secondover = false;
-                }, 1000); 
-           }
-       
-        })
-    }
-
-    function whenKeyDown (event: KeyboardEvent){
-        let key = event.key;
-        if (key == 'Backspace' && clock) {
-            time.pop();
-            time.unshift(0);
-            clock.textContent = formatTimeFromTyped(time, secondover);
-        }
-        
-        if (key == 'Enter' && clock) {
-            clock.textContent = formatTimeFromTyped(time, secondover); 
-
-            //remove Eventlistener for keypresses
-            document.removeEventListener('keydown', whenKeyDown);
-            timerover = false;
-            keyListening = false;    
-        }
-
-        if (key >= '0' && key <= '9' && time.length <= 4 && clock) {
-                if (time.length >= 4){
-                    time.shift();
-                }
-
-                time.push(parseInt(key));
-   
-                clock.textContent = formatTimeFromTyped(time, secondover);
-
+                started = false;
+                if (clock) clock.textContent = '00:00';
+                return;
             }
 
+            totalSeconds -= 1;
+
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            const m1 = Math.floor(minutes / 10);
+            const m2 = minutes % 10;
+            const s1 = Math.floor(seconds / 10);
+            const s2 = seconds % 10;
+
+            time[0] = m1.toString();
+            time[1] = m2.toString();
+            time[2] = s1.toString();
+            time[3] = s2.toString();
+
+            if (clock) {
+                clock.textContent = `${m1}${m2}:${s1}${s2}`;
+            }
+        }, 1000);
     }
-
-})
-
-function formatTimeFromTyped(time: number[], secondover: boolean) : string {
-
-    if (secondover == true){
-        if (time[3] > 0) {
-            time[3] -= 1;
-        } else if (time[2] > 0) {
-            time[2] -= 1;
-            time[3] = 9;
-        } else if (time[1] > 0) {
-            time[1] -= 1;
-            time[2] = 5;
-            time[3] = 9;
-        } else if (time[0] > 0) {
-            time[0] -= 1;
-            time[1] = 9;
-            time[2] = 5;
-            time[3] = 9;
-        }
-    }
-
-    if (time[2] >= 6 && secondover == false) {
-
-       time[1] += 1; 
-       time[2] -= 6;
-
-    }
-
-   const minutes = time[0] * 10 + time[1];
-   const seconds = time[2] * 10 + time[3];
-   
-   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
+
+function pauseTimer(clock: Element | null) {
+    if (started && timerInterval !== undefined) {
+        clearInterval(timerInterval);
+        started = false;
+        paused = true;
+        timerInterval = undefined;
+    }
+}
+
+function stopTimer(clock: Element | null) {
+    if (timerInterval !== undefined) {
+        clearInterval(timerInterval);
+        timerInterval = undefined;
+    }
+
+    started = false;
+    paused = false;
+    timerover = true;
+    counter = 0;
+    time = [];
+
+    if (clock) {
+        clock.textContent = '00:00';
+    }
+}
+
