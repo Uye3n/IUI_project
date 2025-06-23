@@ -10,7 +10,7 @@ let paused = false;
 let mascot_index = 0;
 const mascots = [
     { id: 0, pic: 'sprites/frog_mascot.png', animations: ['sprites/frog_mascot_smiling.gif', 'sprites/frog_mascot_blinking.gif'], lower_opacity_pic: '' }, //frog
-    { id: 1, pic: 'sprites/red_panda_mascot.png', animations: [], lower_opacity_pic: '' }, //red panda
+    { id: 1, pic: 'sprites/red_panda_mascot.png', animations: ['sprites/red_panda_mascot_shy.gif'], lower_opacity_pic: '' }, //red panda
     { id: 2, pic: 'sprites/fox_mascot.png', animations: [], lower_opacity_pic: '' }, //fox
     { id: 3, pic: 'sprites/bunny_mascot.png', animations: [], lower_opacity_pic: '' }, //bunny
 ];
