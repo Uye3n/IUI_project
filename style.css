@@ -1,5 +1,5 @@
 body {
-    background-image: url("sprites/background.png");
+    background-image: url("sprites/background_test.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -81,7 +81,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 70px;
+    margin-top: 50px;
     margin-bottom: 40px;
     font-family: 'VT323', 'basis33', 'Pixel FJVerdana', monospace;
     font-size: 20px;
@@ -92,6 +92,14 @@ body {
     gap: 20px;
     justify-content: center;
     align-items: center;
+}
+
+#mascot-left-locked-img {
+    opacity: 0.75;
+}
+
+#mascot-right-unlocked-img {
+    opacity: 0.75;
 }
 
 #select-container {
