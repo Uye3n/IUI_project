@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const select = document.getElementById('select-button');
     if (clock) {
         clock.addEventListener('click', () => {
-            playClickSound();
             clock.textContent = formatEingabe(time);
             if (!keyListening) {
                 document.addEventListener('keydown', eingabe);
@@ -38,14 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (left_arrow) {
         left_arrow.addEventListener('click', () => {
-            playClickSound();
             mascot_index = (mascot_index - 1 + mascots.length) % mascots.length;
             switchMascot(left_mascot, right_mascot, selected_mascot);
         });
     }
     if (right_arrow) {
         right_arrow.addEventListener('click', () => {
-            playClickSound();
             mascot_index = (mascot_index + 1 + mascots.length) % mascots.length;
             ;
             switchMascot(left_mascot, right_mascot, selected_mascot);
@@ -53,13 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (select) {
         select.addEventListener('click', () => {
-            playClickSound();
             selectMascot(selected_mascot);
         });
     }
     if (stop) {
         stop.addEventListener('click', () => {
-            playClickSound();
             if (is_confirmed) {
                 stopTimer(clock);
             }
@@ -67,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (pause) {
         pause.addEventListener('click', () => {
-            playClickSound();
             if (is_confirmed) {
                 pauseTimer(clock);
             }
@@ -75,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (start) {
         start.addEventListener('click', () => {
-            playClickSound();
             if (is_confirmed) {
                 startTimer(time, clock);
             }
@@ -197,10 +190,4 @@ function stopTimer(clock) {
     if (clock) {
         clock.textContent = '00:00';
     }
-}
-function playClickSound() {
-    const sound = new Audio('sprites/sounds/click.mp3');
-    sound.volume = 1;
-    sound.play().then(() => console.log('Played click sound'))
-        .catch(e => console.error('Error playing sound:', e));
 }
