@@ -9,9 +9,10 @@ let started = false;
 let paused = false;
 let mascot_index = 0;
 const mascots = [
-    { id: 0, pic: 'sprites/frog_mascot.png', animations: [] },
-    { id: 1, pic: 'sprites/red_panda_mascot.png', animations: [] },
-    { id: 2, pic: 'sprites/mascot_unlocked.png', animations: [] },
+    { id: 0, pic: 'sprites/frog_mascot.png', animations: ['sprites/frog_mascot_smiling.gif', 'sprites/frog_mascot_blinking.gif'], lower_opacity_pic: '' }, //frog
+    { id: 1, pic: 'sprites/red_panda_mascot.png', animations: [], lower_opacity_pic: '' }, //red panda
+    { id: 2, pic: 'sprites/fox_mascot.png', animations: [], lower_opacity_pic: '' }, //fox
+    { id: 3, pic: 'sprites/bunny_mascot.png', animations: [], lower_opacity_pic: '' }, //bunny
 ];
 document.addEventListener('DOMContentLoaded', () => {
     const clock = document.querySelector('#clock h1');
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (select) {
         select.addEventListener('click', () => {
-            selectMascot();
+            selectMascot(selected_mascot);
         });
     }
     if (stop) {
@@ -105,11 +106,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 function switchMascot(left_mascot, right_mascot, selected_mascot) {
-    if (selected_mascot) {
+    if (selected_mascot && left_mascot && right_mascot) {
         selected_mascot.src = mascots[mascot_index].pic;
+        left_mascot.src = mascots[(mascot_index - 1 + mascots.length) % mascots.length].pic;
+        right_mascot.src = mascots[(mascot_index + 1 + mascots.length) % mascots.length].pic;
     }
 }
-function selectMascot() {
+function selectMascot(selected_mascot) {
+    if (selected_mascot && mascots[mascot_index].animations[0] != null) {
+        selected_mascot.src = mascots[mascot_index].animations[0];
+    }
 }
 function formatEingabe(time_string) {
     const formatted = [...time_string];
