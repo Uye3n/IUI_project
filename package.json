@@ -12,6 +12,8 @@
     "electron": "^36.5.0"
   },
   "dependencies": {
+    "howler": "^2.2.4",
+    "ps-list": "^8.1.1",
     "typescript": "^5.8.3"
   },
   "repository": {

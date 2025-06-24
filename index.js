@@ -19,6 +19,8 @@ let paused = false;
 let mascot_index = 0;
 let saved_entries;
 let recommends = [];
+const click = new Audio('sprites/sounds/click.mp3');
+click.volume = 1;
 const mascots = [
     { id: 0, pic: 'sprites/frog_mascot.png', animations: ['sprites/animations/frog_mascot_blinking.gif', 'sprites/animations/frog_mascot_sad.gif', 'sprites/animations/frog_mascot_smiling.gif'] }, //frog
     { id: 1, pic: 'sprites/red_panda_mascot.png', animations: ['sprites/animations/red_panda_mascot_waving.gif', 'sprites/animations/red_panda_mascot_shy.gif', 'sprites/animations/red_panda_mascot_waving.gif'] }, //red panda
@@ -45,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (clock) {
         clock.addEventListener('click', () => {
+            click.play();
             clock.textContent = formatEingabe(time);
             if (!keyListening) {
                 document.addEventListener('keydown', eingabe);
@@ -55,12 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (left_arrow) {
         left_arrow.addEventListener('click', () => {
+            click.play();
             mascot_index = (mascot_index - 1 + mascots.length) % mascots.length;
             switchMascot(left_mascot, right_mascot, selected_mascot);
         });
     }
     if (right_arrow) {
         right_arrow.addEventListener('click', () => {
+            click.play();
             mascot_index = (mascot_index + 1 + mascots.length) % mascots.length;
             ;
             switchMascot(left_mascot, right_mascot, selected_mascot);

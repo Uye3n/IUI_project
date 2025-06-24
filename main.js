@@ -91,7 +91,7 @@ electron_1.ipcMain.on('write-timer-data', (event, data) => {
     });
 });
 function createWindow() {
-    const win = new electron_1.BrowserWindow({
+    const mainWindow = new electron_1.BrowserWindow({
         width: 800,
         height: 800,
         x: 0,
@@ -102,7 +102,7 @@ function createWindow() {
             nodeIntegration: false
         }
     });
-    win.loadFile('index.html');
+    mainWindow.loadFile('index.html');
 }
 electron_1.app.whenReady().then(() => {
     createWindow();

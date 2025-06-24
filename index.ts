@@ -10,6 +10,7 @@ let mascot_index: number = 0;
 let saved_entries: any;
 let recommends: TimerEntry[] = [];
 
+
 type TimerEntry = {
   date: string;
   timer: string;
