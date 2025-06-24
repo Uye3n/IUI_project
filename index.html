@@ -6,47 +6,45 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="fixed-window">
-    <div class="clock-container">
-        <div id="clock">
-            <h1>00:00</h1>
-        </div>
-        <div class="button-container">
-            <button id="start-button"></button>
-            <button id="stop-button"></button>
-            <button id="pause-button"></button>
-        </div>
+<div class="clock-container">
+    <div id="clock">
+        <h1>00:00</h1>
     </div>
-    <div class="mascot-container">
-        <div id="mascot-label">
-            <img src="sprites/choose_mascot_label.png" alt="choose mascot" id="choose-mascot-label">
+    <div class="button-container">
+        <button id="start-button"></button>
+        <button id="stop-button"></button>
+        <button id="pause-button"></button>
+    </div>
+</div>
+<div class="mascot-container">
+    <div id="mascot-label">
+        <img src="sprites/choose_mascot_label.png" alt="choose mascot" id="choose-mascot-label">
+    </div>
+    <div class="mascot-selection">
+        <div id="left-arrow">
+            <button id="left-arrow-button"></button>
         </div>
-        <div class="mascot-selection">
-            <div id="left-arrow">
-                <button id="left-arrow-button"></button>
-            </div>
-            <div id="left-mascot">
-                <img src="sprites/bunny_mascot.png" alt="mascot" id="mascot-left-locked-img">
-            </div>
-            <div id="selected-mascot">
-                <img src="sprites/frog_mascot.png" alt="mascot" id="mascot-selected-img">
-            </div>
-            <div id="right-mascot">
-                <img src="sprites/red_panda_mascot.png" alt="mascot" id="mascot-right-unlocked-img">
-            </div>
+        <div id="left-mascot">
+            <img src="sprites/bunny_mascot.png" alt="mascot" id="mascot-left-locked-img">
+        </div>
+        <div id="selected-mascot">
+            <img src="sprites/frog_mascot.png" alt="mascot" id="mascot-selected-img">
+        </div>
+        <div id="right-mascot">
+            <img src="sprites/red_panda_mascot.png" alt="mascot" id="mascot-right-unlocked-img">
+        </div>
 
-            <div id="right-arrow">
-                <button id="right-arrow-button"></button>
-            </div>
-        </div>
-        <div id="select-container">
-            <button id="select-button"></button>
+        <div id="right-arrow">
+            <button id="right-arrow-button"></button>
         </div>
     </div>
-    <div class="bottom-container">
-        <button id="block-list-button"></button>
-        <button id="pop-out-button"></button>
+    <div id="select-container">
+        <button id="select-button"></button>
     </div>
+</div>
+<div class="bottom-container">
+    <button id="block-list-button"></button>
+    <button id="pop-out-button"></button>
 </div>
 <script src="index.js"></script>
 </body>

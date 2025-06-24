@@ -3,12 +3,11 @@ body {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
-.fixed-window {
-    width: 600px;
-    height: 630px;
-    margin: 0 auto;
-}
+
 .clock-container {
     display: block;
     justify-content: center;
@@ -140,6 +139,7 @@ body {
 
 #block-list-button {
     background: transparent url(sprites/list_button.png) no-repeat 0 0;
+    margin-left: 20px;
 }
 
 #block-list-button:hover {
