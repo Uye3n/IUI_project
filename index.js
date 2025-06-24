@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 let time = [];
 let counter = 0;
 let keyListening = false;
@@ -8,11 +17,13 @@ let is_confirmed = false;
 let started = false;
 let paused = false;
 let mascot_index = 0;
+let saved_entries;
+let recommends = [];
 const mascots = [
-    { id: 0, pic: 'sprites/frog_mascot.png', animations: ['sprites/frog_mascot_smiling.gif', 'sprites/frog_mascot_blinking.gif'], lower_opacity_pic: '' }, //frog
-    { id: 1, pic: 'sprites/red_panda_mascot.png', animations: ['sprites/red_panda_mascot_shy.gif'], lower_opacity_pic: '' }, //red panda
-    { id: 2, pic: 'sprites/fox_mascot.png', animations: [], lower_opacity_pic: '' }, //fox
-    { id: 3, pic: 'sprites/bunny_mascot.png', animations: [], lower_opacity_pic: '' }, //bunny
+    { id: 0, pic: 'sprites/frog_mascot.png', animations: ['sprites/animations/frog_mascot_blinking.gif', 'sprites/animations/frog_mascot_sad.gif', 'sprites/animations/frog_mascot_smiling.gif'] }, //frog
+    { id: 1, pic: 'sprites/red_panda_mascot.png', animations: ['sprites/animations/red_panda_mascot_waving.gif', 'sprites/animations/red_panda_mascot_shy.gif', 'sprites/animations/red_panda_mascot_waving.gif'] }, //red panda
+    { id: 2, pic: 'sprites/fox_mascot.png', animations: [] }, //fox
+    { id: 3, pic: 'sprites/bunny_mascot.png', animations: [] }, //bunny
 ];
 document.addEventListener('DOMContentLoaded', () => {
     const clock = document.querySelector('#clock h1');
@@ -25,6 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const left_arrow = document.getElementById('left-arrow-button');
     const right_arrow = document.getElementById('right-arrow-button');
     const select = document.getElementById('select-button');
+    //add button for recommendations
+    const recs = document.getElementById('recommendations-button');
+    if (recs) {
+        recs.addEventListener('click', () => {
+            compute_recs();
+        });
+    }
     if (clock) {
         clock.addEventListener('click', () => {
             clock.textContent = formatEingabe(time);
@@ -92,10 +110,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 time.push('0');
             }
             clock.textContent = formatEingabe(time);
-            clock.textContent = formatTime(time);
+            const formatted = formatTime(time);
+            clock.textContent = formatted;
             document.removeEventListener('keydown', eingabe);
             keyListening = false;
             timerover = false;
+            if (window.electronAPI) {
+                const formatted = formatTime(time);
+                window.electronAPI.writeTimerData(formatted);
+            }
             return;
         }
         if (key >= '0' && key <= '9' && clock && counter < 4) {
@@ -190,4 +213,28 @@ function stopTimer(clock) {
     if (clock) {
         clock.textContent = '00:00';
     }
+}
+function compute_recs() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            saved_entries = yield window.electronAPI.readTimerData();
+            if (!Array.isArray(saved_entries) || saved_entries.length === 0) {
+                alert('No saved timer entries found.');
+                return;
+            }
+            const todayWeekday = new Date().getDay();
+            recommends = saved_entries.filter(entry => {
+                const entryDate = new Date(entry.date);
+                return entryDate.getDay() === todayWeekday;
+            });
+            if (recommends.length === 0) {
+                alert(`No entries saved on this weekday (${new Date().toLocaleDateString(undefined, { weekday: 'long' })}).`);
+                return;
+            }
+            recommends.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        }
+        catch (error) {
+            console.error('Error fetching or processing timer data:', error);
+        }
+    });
 }

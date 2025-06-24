@@ -7,22 +7,35 @@ let is_confirmed: boolean = false;
 let started: boolean = false;
 let paused: boolean = false;
 let mascot_index: number = 0;
+let saved_entries: any;
+let recommends: TimerEntry[] = [];
+
+type TimerEntry = {
+  date: string;
+  timer: string;
+};
 
 type Mascot = {
     id: number;
     pic: string;
-    animations: string[];
-    lower_opacity_pic: string;
+    animations: string[]; // 0:inactivity, 1: distracted website/frequent timer pauses, 2: task completed/sustained
 };
 
 const mascots: Mascot[] = [
-    { id: 0, pic: 'sprites/frog_mascot.png', animations: ['sprites/frog_mascot_smiling.gif', 'sprites/frog_mascot_blinking.gif'], lower_opacity_pic: ''}, //frog
-    { id: 1, pic: 'sprites/red_panda_mascot.png', animations: ['sprites/red_panda_mascot_shy.gif'], lower_opacity_pic: ''}, //red panda
-    { id: 2, pic: 'sprites/fox_mascot.png', animations: [], lower_opacity_pic: ''}, //fox
-    { id: 3, pic: 'sprites/bunny_mascot.png', animations: [], lower_opacity_pic: ''}, //bunny
+    { id: 0, pic: 'sprites/frog_mascot.png', animations: ['sprites/animations/frog_mascot_blinking.gif', 'sprites/animations/frog_mascot_sad.gif', 'sprites/animations/frog_mascot_smiling.gif']}, //frog
+    { id: 1, pic: 'sprites/red_panda_mascot.png', animations: ['sprites/animations/red_panda_mascot_waving.gif','sprites/animations/red_panda_mascot_shy.gif', 'sprites/animations/red_panda_mascot_waving.gif']}, //red panda
+    { id: 2, pic: 'sprites/fox_mascot.png', animations: []}, //fox
+    { id: 3, pic: 'sprites/bunny_mascot.png', animations: []}, //bunny
 
 
 ];
+
+interface Window {
+  electronAPI: {
+    writeTimerData: (data: string) => void;
+    readTimerData: () => {date: string, timer: string}[];
+  };
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -38,7 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const right_arrow = document.getElementById('right-arrow-button');
     const select = document.getElementById('select-button');
 
+    //add button for recommendations
+    const recs = document.getElementById('recommendations-button');
 
+
+    if(recs){
+        recs.addEventListener('click', () => {
+            compute_recs();
+        })
+    }
 
     if (clock) {
         clock.addEventListener('click', () => {
@@ -123,11 +144,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 time.push('0');
             }
             clock.textContent = formatEingabe(time);
-
-            clock.textContent = formatTime(time);
+            const formatted = formatTime(time); 
+            clock.textContent = formatted;
             document.removeEventListener('keydown', eingabe);
             keyListening = false;
             timerover = false;
+            if (window.electronAPI) {
+                const formatted = formatTime(time);
+                window.electronAPI.writeTimerData(formatted); 
+            }
             return;
         }
 
@@ -254,3 +279,31 @@ function stopTimer(clock: Element | null) {
     }
 }
 
+async function compute_recs() {
+  try {
+    saved_entries = await window.electronAPI.readTimerData();
+
+    if (!Array.isArray(saved_entries) || saved_entries.length === 0) {
+      alert('No saved timer entries found.');
+      return;
+    }
+
+    const todayWeekday = new Date().getDay();
+
+    recommends = saved_entries.filter(entry => {
+      const entryDate = new Date(entry.date);
+      return entryDate.getDay() === todayWeekday;
+    });
+
+    if (recommends.length === 0) {
+      alert(`No entries saved on this weekday (${new Date().toLocaleDateString(undefined, { weekday: 'long' })}).`);
+      return;
+    }
+
+    recommends.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+
+  } catch (error) {
+    console.error('Error fetching or processing timer data:', error);
+  }
+}
