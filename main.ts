@@ -7,8 +7,8 @@ function createWindow() {
     const {width, height} = primaryDisplay.size;
 
     const win = new BrowserWindow({
-        width: width * 0.75,
-        height: height * 0.75, 
+        width: 800,
+        height: 800, 
         x: 0,
         y: 0,
     })

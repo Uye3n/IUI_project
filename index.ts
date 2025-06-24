@@ -25,6 +25,7 @@ const mascots: Mascot[] = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
+    
 
     const clock = document.querySelector('#clock h1');
     const start = document.getElementById('start-button');
@@ -91,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (start) {
-        start.addEventListener('click', () => {   
+        start.addEventListener('click', () => {
             if(is_confirmed){
                 startTimer(time, clock); 
             } 
